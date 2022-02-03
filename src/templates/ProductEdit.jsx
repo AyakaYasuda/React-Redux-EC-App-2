@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ImageArea from '../components/Products/ImageArea';
 import { TextInput, SelectBox, PrimaryButton } from '../components/UI';
 import { saveProduct } from '../reducks/products/operations';
 
@@ -11,6 +12,7 @@ const ProductEdit = () => {
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [gender, setGender] = useState('');
+  const [images, setImages] = useState([]);
 
   const categories = [
     { id: 'tops', name: 'tops' },
@@ -49,6 +51,7 @@ const ProductEdit = () => {
     <section>
       <h2 className='u-text__headline u-text-center'>Add and Edit Products</h2>
       <div className='c-section-container'>
+        <ImageArea images={images} setImages={setImages} />
         <TextInput
           fullWidth={true}
           label={'Product Name'}

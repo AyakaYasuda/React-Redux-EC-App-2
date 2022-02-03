@@ -6,14 +6,13 @@ import { FormControl } from '@mui/material';
 import { Select } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   formControl: {
-    marginBottom: 8,
-    marginTop: 8,
-    minWidth: 128,
+    marginBottom: 16,
+    minWidth: 120,
     width: '100%',
   },
-});
+}));
 
 const SelectBox = props => {
   const classes = useStyles();
