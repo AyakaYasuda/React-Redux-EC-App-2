@@ -1,6 +1,56 @@
 import { signInAction } from './actions';
+import { signOutAction } from './actions';
 import { push } from 'connected-react-router';
 import { auth, db, FirebaseTimestamp } from '../../firebase';
+import { useSelector } from 'react-redux';
+
+export const listenAuthState = () => {
+  return async dispatch => {
+    return auth.onAuthStateChanged(user => {
+      if (user) {
+        // if a user exists, the authentication completed
+        const uid = user.uid;
+        db.collection('users')
+          .doc(uid)
+          .get()
+          .then(snapshot => {
+            const data = snapshot.data();
+
+            dispatch(
+              signInAction({
+                isSignedIn: true,
+                role: data.role,
+                uid: uid,
+                username: data.username,
+              })
+            );
+          });
+      } else {
+        // if not, get back to sign in
+        dispatch(push('/signin'));
+      }
+    });
+  };
+};
+
+export const resetPassword = email => {
+  return async dispatch => {
+    if (email === '') {
+      alert('Required items cannot be blank!');
+      return false;
+    } else {
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          alert('Sent you a confirmation email.');
+          dispatch(push('/signin'));
+        })
+        .catch(() => {
+          alert('Failed to reset your password');
+        });
+    }
+  };
+};
 
 export const signIn = (email, password) => {
   return async dispatch => {
@@ -29,7 +79,6 @@ export const signIn = (email, password) => {
                 username: data.username,
               })
             );
-
             dispatch(push('/'));
           });
       }
@@ -39,7 +88,6 @@ export const signIn = (email, password) => {
 
 export const signUp = (username, email, password, confirmPassword) => {
   return async dispatch => {
-    console.log(username, email, password, confirmPassword);
     // Validation
     if (
       username === '' ||
@@ -78,6 +126,15 @@ export const signUp = (username, email, password, confirmPassword) => {
             dispatch(push('/'));
           });
       }
+    });
+  };
+};
+
+export const signOut = () => {
+  return async dispatch => {
+    auth.signOut().then(() => {
+      dispatch(signOutAction());
+      dispatch(push('/signin'));
     });
   };
 };
