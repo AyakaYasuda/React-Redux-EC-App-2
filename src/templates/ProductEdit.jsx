@@ -102,7 +102,7 @@ const ProductEdit = () => {
         <PrimaryButton
           label={'Save'}
           onClick={() =>
-            dispatch(saveProduct(name, description, category, gender, price))
+            dispatch(saveProduct(name, description, category, gender, price, images))
           }
         />
       </div>

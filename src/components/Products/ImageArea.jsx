@@ -43,12 +43,32 @@ const ImageArea = props => {
     [props.setImages]
   );
 
+  const deleteImage = useCallback(
+    async id => {
+      console.log(id);
+      const ret = window.confirm('Are you sure to delete this image?');
+      if (!ret) {
+        return false;
+      } else {
+        const newImages = props.images.filter(image => image.id !== id);
+        props.setImages(newImages);
+        return storage.ref('images').child(id).delete();
+      }
+    },
+    [props.images]
+  );
+
   return (
     <div>
       <div className='p-grid__list-images'>
         {props.images.length > 0 &&
           props.images.map(image => (
-            <ImagePreview id={image.id} path={image.path} key={image.id} />
+            <ImagePreview
+              id={image.id}
+              path={image.path}
+              key={image.id}
+              delete={deleteImage}
+            />
           ))}
       </div>
       <div className='u-text-right'>
