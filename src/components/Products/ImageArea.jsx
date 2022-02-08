@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { storage } from '../../firebase';
-import ImagePreview from './ImagePreview';
+import { ImagePreview } from './index';
 
 import { IconButton } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
