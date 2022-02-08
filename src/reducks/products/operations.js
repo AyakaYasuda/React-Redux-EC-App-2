@@ -12,6 +12,7 @@ export const saveProduct = (
   images
 ) => {
   return async dispatch => {
+    console.log(name, description, price, category, gender, images);
     const timestamp = FirebaseTimestamp.now();
 
     const data = {
