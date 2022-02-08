@@ -128,7 +128,7 @@ const ProductEdit = () => {
           label={'Save'}
           onClick={() =>
             dispatch(
-              saveProduct(name, description, price, category, gender, images)
+              saveProduct(id, name, description, price, category, gender, images)
             )
           }
         />
