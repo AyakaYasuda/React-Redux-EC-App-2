@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 const productsRef = db.collection('products');
 
 export const saveProduct = (
+  id,
   name,
   description,
   price,
@@ -25,14 +26,17 @@ export const saveProduct = (
       updated_at: timestamp,
     };
 
-    const ref = productsRef.doc();
-    const id = ref.id;
-    data.id = id;
-    data.created_at = timestamp;
+    // if id does not exist meaning it's first time to add an item
+    if (id === '') {
+      const ref = productsRef.doc();
+      const id = ref.id;
+      data.id = id;
+      data.created_at = timestamp;
+    }
 
     return productsRef
       .doc(id)
-      .set(data)
+      .set(data, { merge: true })
       .then(() => {
         dispatch(push('/'));
       })
