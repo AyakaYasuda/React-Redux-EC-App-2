@@ -1,7 +1,24 @@
-import { db, FirebaseTimestamp } from '../../firebase';
-import { push } from 'connected-react-router';
+import { db, FirebaseTimestamp } from "../../firebase";
+import { push } from "connected-react-router";
+import { fetchProductsAction } from "./actions";
 
-const productsRef = db.collection('products');
+const productsRef = db.collection("products");
+
+export const fetchProducts = () => {
+  return async dispatch => {
+    productsRef
+      .orderBy("updated_at", "desc")
+      .get()
+      .then(snapshots => {
+        const productList = [];
+        snapshots.forEach(snapshot => {
+          const product = snapshot.data();
+          productList.push(product);
+        });
+        dispatch(fetchProductsAction(productList));
+      });
+  };
+};
 
 export const saveProduct = (
   id,
@@ -28,7 +45,7 @@ export const saveProduct = (
     };
 
     // if id does not exist meaning it's first time to add an item
-    if (id === '') {
+    if (id === "") {
       const ref = productsRef.doc();
       const id = ref.id;
       data.id = id;
@@ -39,7 +56,7 @@ export const saveProduct = (
       .doc(id)
       .set(data, { merge: true })
       .then(() => {
-        dispatch(push('/'));
+        dispatch(push("/"));
       })
       .catch(error => {
         throw new Error(error);
