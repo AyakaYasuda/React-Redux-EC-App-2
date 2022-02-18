@@ -1,13 +1,18 @@
-import React from 'react';
-import Router from './Router';
-import './assets/reset.css';
-import './assets/style.css';
+import React from "react";
+import Router from "./Router";
+import "./assets/reset.css";
+import "./assets/style.css";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme();
 
 const App = () => {
   return (
-    <main>
-      <Router />
-    </main>
+    <ThemeProvider theme={theme}>
+      <main>
+        <Router />
+      </main>
+    </ThemeProvider>
   );
 };
 
