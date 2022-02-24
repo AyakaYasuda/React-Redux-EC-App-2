@@ -2,7 +2,7 @@ import * as Actions from './actions';
 import initialState from '../store/initialState';
 
 export const UsersReducer = (state = initialState.users, action) => {
-  console.log(state, action);
+  // console.log(state, action);
   switch (action.type) {
     case Actions.SIGN_IN:
       console.log('SIGN_IN');

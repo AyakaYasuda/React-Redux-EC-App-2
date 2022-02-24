@@ -1,11 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import ImageArea from '../components/Products/ImageArea';
+import { ImageArea, SetSizeArea } from '../components/Products';
 import { TextInput, SelectBox, PrimaryButton } from '../components/UI';
 import { saveProduct } from '../reducks/products/operations';
+import { db } from '../firebase/index';
 
 const ProductEdit = () => {
   const dispatch = useDispatch();
+
+  let id = window.location.pathname.split('/product/edit')[1];
+
+  if (id !== '') {
+    id = id.split('/')[1];
+  }
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -13,6 +20,7 @@ const ProductEdit = () => {
   const [category, setCategory] = useState('');
   const [gender, setGender] = useState('');
   const [images, setImages] = useState([]);
+  const [sizes, setSizes] = useState([]);
 
   const categories = [
     { id: 'tops', name: 'tops' },
@@ -46,6 +54,25 @@ const ProductEdit = () => {
     },
     [setPrice]
   );
+
+  useEffect(() => {
+    if (id !== '') {
+      db.collection('products')
+        .doc(id)
+        .get()
+        .then(snapshot => {
+          const data = snapshot.data();
+          console.log(data);
+          setImages(data.images);
+          setName(data.name);
+          setDescription(data.description);
+          setCategory(data.category);
+          setGender(data.gender);
+          setPrice(data.price);
+          setSizes(data.sizes)
+        });
+    }
+  }, [id]);
 
   return (
     <section>
@@ -96,15 +123,28 @@ const ProductEdit = () => {
           type={'number'}
           onChange={inputPrice}
         />
-      </div>
-      <div className='module-spacer--medium' />
-      <div className='center'>
-        <PrimaryButton
-          label={'Save'}
-          onClick={() =>
-            dispatch(saveProduct(name, description, category, gender, price, images))
-          }
-        />
+        <div className='module-spacer--small' />
+        <SetSizeArea sizes={sizes} setSizes={setSizes} />
+        <div className='module-spacer--small' />
+        <div className='center'>
+          <PrimaryButton
+            label={'Save'}
+            onClick={() =>
+              dispatch(
+                saveProduct(
+                  id,
+                  name,
+                  description,
+                  price,
+                  category,
+                  gender,
+                  images,
+                  sizes
+                )
+              )
+            }
+          />
+        </div>
       </div>
     </section>
   );
