@@ -1,20 +1,19 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-
+import { createTheme } from "@mui/material/styles";
 // Pick colors on https://material.io/resources/color/#!/
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     primary: {
-      light: '#88ffff',
-      main: '#4dd0e1',
-      dark: '#009faf',
-      contrastText: '#000',
+      light: "#88ffff",
+      main: "#4dd0e1",
+      dark: "#009faf",
+      contrastText: "#000",
     },
     secondary: {
-      light: '#ffff81',
-      main: '#ffd54f',
-      dark: '#c8a415',
-      contrastText: '#000',
+      light: "#ffff81",
+      main: "#ffd54f",
+      dark: "#c8a415",
+      contrastText: "#000",
     },
     grey: {
       50: "#fafafa",
@@ -30,7 +29,7 @@ export const theme = createMuiTheme({
       A100: "#d5d5d5",
       A200: "#aaaaaa",
       A400: "#303030",
-      A700: "#616161"
-    }
+      A700: "#616161",
+    },
   },
 });
