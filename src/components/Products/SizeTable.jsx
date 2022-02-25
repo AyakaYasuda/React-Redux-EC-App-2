@@ -11,13 +11,13 @@ import { makeStyles } from "@mui/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   iconCell: {
     padding: 0,
     height: 48,
     width: 48,
   },
-});
+}));
 
 const SizeTable = props => {
   const classes = useStyles();
