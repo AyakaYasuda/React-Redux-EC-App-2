@@ -1,37 +1,37 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { ImageArea, SetSizeArea } from '../components/Products';
-import { TextInput, SelectBox, PrimaryButton } from '../components/UI';
-import { saveProduct } from '../reducks/products/operations';
-import { db } from '../firebase/index';
+import React, { useCallback, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { ImageArea, SetSizeArea } from "../components/Products";
+import { TextInput, SelectBox, PrimaryButton } from "../components/UI";
+import { saveProduct } from "../reducks/products/operations";
+import { db } from "../firebase/index";
 
 const ProductEdit = () => {
   const dispatch = useDispatch();
 
-  let id = window.location.pathname.split('/product/edit')[1];
+  let id = window.location.pathname.split("/product/edit")[1];
 
-  if (id !== '') {
-    id = id.split('/')[1];
+  if (id !== "") {
+    id = id.split("/")[1];
   }
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [gender, setGender] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [gender, setGender] = useState("");
   const [images, setImages] = useState([]);
   const [sizes, setSizes] = useState([]);
 
   const categories = [
-    { id: 'tops', name: 'tops' },
-    { id: 'shirt', name: 'shirt' },
-    { id: 'pants', name: 'pants' },
+    { id: "tops", name: "tops" },
+    { id: "shirt", name: "shirt" },
+    { id: "pants", name: "pants" },
   ];
 
   const genders = [
-    { id: 'all', name: 'all' },
-    { id: 'male', name: 'mens' },
-    { id: 'female', name: 'womens' },
+    { id: "all", name: "all" },
+    { id: "male", name: "mens" },
+    { id: "female", name: "womens" },
   ];
 
   const inputName = useCallback(
@@ -56,8 +56,8 @@ const ProductEdit = () => {
   );
 
   useEffect(() => {
-    if (id !== '') {
-      db.collection('products')
+    if (id !== "") {
+      db.collection("products")
         .doc(id)
         .get()
         .then(snapshot => {
@@ -69,45 +69,45 @@ const ProductEdit = () => {
           setCategory(data.category);
           setGender(data.gender);
           setPrice(data.price);
-          setSizes(data.sizes)
+          setSizes(data.sizes);
         });
     }
   }, [id]);
 
   return (
     <section>
-      <h2 className='u-text__headline u-text-center'>Add and Edit Products</h2>
-      <div className='c-section-container'>
+      <h2 className="u-text__headline u-text-center">Add and Edit Products</h2>
+      <div className="c-section-container">
         <ImageArea images={images} setImages={setImages} />
         <TextInput
           fullWidth={true}
-          label={'Product Name'}
+          label={"Product Name"}
           multiline={false}
           required={true}
           rows={1}
           value={name}
-          type={'text'}
+          type={"text"}
           onChange={inputName}
         />
         <TextInput
           fullWidth={true}
-          label={'Product Description'}
+          label={"Product Description"}
           multiline={true}
           required={true}
           rows={5}
           value={description}
-          type={'text'}
+          type={"text"}
           onChange={inputDescription}
         />
         <SelectBox
-          label={'Category'}
+          label={"Category"}
           required={true}
           options={categories}
           select={setCategory}
           value={category}
         />
         <SelectBox
-          label={'Gender'}
+          label={"Gender"}
           required={true}
           options={genders}
           select={setGender}
@@ -115,20 +115,20 @@ const ProductEdit = () => {
         />
         <TextInput
           fullWidth={true}
-          label={'Price'}
+          label={"Price"}
           multiline={false}
           required={true}
           rows={1}
           value={price}
-          type={'number'}
+          type={"number"}
           onChange={inputPrice}
         />
-        <div className='module-spacer--small' />
+        <div className="module-spacer--small" />
         <SetSizeArea sizes={sizes} setSizes={setSizes} />
-        <div className='module-spacer--small' />
-        <div className='center'>
+        <div className="module-spacer--small" />
+        <div className="center">
           <PrimaryButton
-            label={'Save'}
+            label={"Save"}
             onClick={() =>
               dispatch(
                 saveProduct(

@@ -4,7 +4,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import MenuIcon from "@mui/icons-material/Menu";
 
-const HeaderMenus = () => {
+const HeaderMenus = props => {
   return (
     <>
       <IconButton>
@@ -15,7 +15,7 @@ const HeaderMenus = () => {
       <IconButton>
         <FavoriteBorderIcon />
       </IconButton>
-      <IconButton>
+      <IconButton onClick={event => props.handleDrawerToggle(event)}>
         <MenuIcon />
       </IconButton>
     </>

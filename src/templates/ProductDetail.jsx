@@ -62,7 +62,6 @@ const ProductDetail = () => {
         setProduct(data);
       });
   }, []);
-  console.log(product);
 
   return (
     <section className="c-section-wrapin">

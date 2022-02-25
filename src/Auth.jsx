@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { listenAuthState } from './reducks/users/operations';
 import { getIsSignedIn } from './reducks/users/selectors';
 
