@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import { InputLabel } from '@mui/material';
-import { MenuItem } from '@mui/material';
-import { FormControl } from '@mui/material';
-import { Select } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { InputLabel } from "@mui/material";
+import { MenuItem } from "@mui/material";
+import { FormControl } from "@mui/material";
+import { Select } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   formControl: {
     marginBottom: 16,
     minWidth: 120,
-    width: '100%',
+    width: "100%",
   },
-}));
+});
 
 const SelectBox = props => {
   const classes = useStyles();

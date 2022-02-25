@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
-import { storage } from '../../firebase';
-import { ImagePreview } from './index';
+import React, { useCallback } from "react";
+import { storage } from "../../firebase";
+import { ImagePreview } from "./index";
 
-import { IconButton } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { makeStyles } from '@mui/styles';
+import { IconButton } from "@mui/material";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   icon: {
@@ -19,17 +19,17 @@ const ImageArea = props => {
   const uploadImage = useCallback(
     event => {
       const file = event.target.files;
-      let blob = new Blob(file, { type: 'image/jpeg' });
+      let blob = new Blob(file, { type: "image/jpeg" });
 
       // Generate random 16 digits strings
       const S =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       const N = 16;
       const fileName = Array.from(crypto.getRandomValues(new Uint32Array(N)))
         .map(n => S[n % S.length])
-        .join('');
+        .join("");
 
-      const uploadRef = storage.ref('images').child(fileName);
+      const uploadRef = storage.ref("images").child(fileName);
       const uploadTask = uploadRef.put(blob);
 
       uploadTask.then(() => {
@@ -46,13 +46,13 @@ const ImageArea = props => {
   const deleteImage = useCallback(
     async id => {
       console.log(id);
-      const ret = window.confirm('Are you sure to delete this image?');
+      const ret = window.confirm("Are you sure to delete this image?");
       if (!ret) {
         return false;
       } else {
         const newImages = props.images.filter(image => image.id !== id);
         props.setImages(newImages);
-        return storage.ref('images').child(id).delete();
+        return storage.ref("images").child(id).delete();
       }
     },
     [props.images]
@@ -60,7 +60,7 @@ const ImageArea = props => {
 
   return (
     <div>
-      <div className='p-grid__list-images'>
+      <div className="p-grid__list-images">
         {props.images.length > 0 &&
           props.images.map(image => (
             <ImagePreview
@@ -71,15 +71,15 @@ const ImageArea = props => {
             />
           ))}
       </div>
-      <div className='u-text-right'>
+      <div className="u-text-right">
         <span>Add a product image</span>
         <IconButton className={classes.icon}>
           <label>
             <AddPhotoAlternateIcon />
             <input
-              className='u-display-none'
-              type='file'
-              id='image'
+              className="u-display-none"
+              type="file"
+              id="image"
               onChange={event => uploadImage(event)}
             />
           </label>
