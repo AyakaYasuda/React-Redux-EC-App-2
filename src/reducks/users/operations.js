@@ -1,8 +1,22 @@
-import { signInAction } from './actions';
-import { signOutAction } from './actions';
-import { push } from 'connected-react-router';
-import { auth, db, FirebaseTimestamp } from '../../firebase';
-import { useSelector } from 'react-redux';
+import { signInAction, signOutAction, fetchProductsInCartAction } from "./actions";
+import { push } from "connected-react-router";
+import { auth, db, FirebaseTimestamp } from "../../firebase";
+
+export const addProductToCart = addedProduct => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = db.collection("users").doc(uid).collection("cart").doc();
+    addedProduct.cartId = cartRef.id;
+    await cartRef.set(addedProduct);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchProductsInCart = products => {
+  return async dispatch => {
+    dispatch(fetchProductsInCartAction(products));
+  };
+};
 
 export const listenAuthState = () => {
   return async dispatch => {
@@ -10,7 +24,7 @@ export const listenAuthState = () => {
       if (user) {
         // if a user exists, the authentication completed
         const uid = user.uid;
-        db.collection('users')
+        db.collection("users")
           .doc(uid)
           .get()
           .then(snapshot => {
@@ -27,7 +41,7 @@ export const listenAuthState = () => {
           });
       } else {
         // if not, get back to sign in
-        dispatch(push('/signin'));
+        dispatch(push("/signin"));
       }
     });
   };
@@ -35,18 +49,18 @@ export const listenAuthState = () => {
 
 export const resetPassword = email => {
   return async dispatch => {
-    if (email === '') {
-      alert('Required items cannot be blank!');
+    if (email === "") {
+      alert("Required items cannot be blank!");
       return false;
     } else {
       auth
         .sendPasswordResetEmail(email)
         .then(() => {
-          alert('Sent you a confirmation email.');
-          dispatch(push('/signin'));
+          alert("Sent you a confirmation email.");
+          dispatch(push("/signin"));
         })
         .catch(() => {
-          alert('Failed to reset your password');
+          alert("Failed to reset your password");
         });
     }
   };
@@ -55,8 +69,8 @@ export const resetPassword = email => {
 export const signIn = (email, password) => {
   return async dispatch => {
     // Validation
-    if (email === '' || password === '') {
-      alert('Required items cannot be blank!');
+    if (email === "" || password === "") {
+      alert("Required items cannot be blank!");
       return false;
     }
 
@@ -66,7 +80,7 @@ export const signIn = (email, password) => {
       if (user) {
         const uid = user.uid;
 
-        db.collection('users')
+        db.collection("users")
           .doc(uid)
           .get()
           .then(snapshot => {
@@ -79,7 +93,7 @@ export const signIn = (email, password) => {
                 username: data.username,
               })
             );
-            dispatch(push('/'));
+            dispatch(push("/"));
           });
       }
     });
@@ -90,17 +104,17 @@ export const signUp = (username, email, password, confirmPassword) => {
   return async dispatch => {
     // Validation
     if (
-      username === '' ||
-      email === '' ||
-      password === '' ||
-      confirmPassword === ''
+      username === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
     ) {
-      alert('Required items cannot be blank!');
+      alert("Required items cannot be blank!");
       return false;
     }
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return false;
     }
 
@@ -113,17 +127,17 @@ export const signUp = (username, email, password, confirmPassword) => {
         const userInitialData = {
           created_at: timestamp,
           email: email,
-          role: 'customer',
+          role: "customer",
           uid: uid,
           // updated_at: timestamp,
           username: username,
         };
 
-        db.collection('users')
+        db.collection("users")
           .doc(uid)
           .set(userInitialData)
           .then(() => {
-            dispatch(push('/'));
+            dispatch(push("/"));
           });
       }
     });
@@ -134,7 +148,7 @@ export const signOut = () => {
   return async dispatch => {
     auth.signOut().then(() => {
       dispatch(signOutAction());
-      dispatch(push('/signin'));
+      dispatch(push("/signin"));
     });
   };
 };
