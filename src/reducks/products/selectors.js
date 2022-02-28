@@ -6,3 +6,4 @@ export const getProducts = createSelector(
   [productsSelector],
   state => state.list
 );
+
