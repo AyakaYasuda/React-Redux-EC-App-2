@@ -1,7 +1,6 @@
 import { db, FirebaseTimestamp } from "../../firebase";
 import { push } from "connected-react-router";
 import { fetchProductsAction, deleteProductAction } from "./actions";
-import { Aod } from "@mui/icons-material";
 
 const productsRef = db.collection("products");
 
@@ -18,19 +17,20 @@ export const deleteProduct = id => {
   };
 };
 
-export const fetchProducts = () => {
+export const fetchProducts = (gender, category) => {
   return async dispatch => {
-    productsRef
-      .orderBy("updated_at", "desc")
-      .get()
-      .then(snapshots => {
-        const productList = [];
-        snapshots.forEach(snapshot => {
-          const product = snapshot.data();
-          productList.push(product);
-        });
-        dispatch(fetchProductsAction(productList));
+    let query = productsRef.orderBy("updated_at", "desc");
+    query = gender !== "" ? query.where("gender", "==", gender) : query;
+    query = category !== "" ? query.where("category", "==", category) : query;
+
+    query.get().then(snapshots => {
+      const productList = [];
+      snapshots.forEach(snapshot => {
+        const product = snapshot.data();
+        productList.push(product);
       });
+      dispatch(fetchProductsAction(productList));
+    });
   };
 };
 
